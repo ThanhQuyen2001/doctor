@@ -4,17 +4,18 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
     {
-        ten: { type: String },
+        name: { type: String },
         phone: { type: String },
-        diaChi: {type: String},
-        anh: {type: String},
-        chucVu: {type: Number},
-        password: {type: String},
+        address: { type: String },
+        username: { type: String },
+        position: { type: Number },
+        password: { type: String },
+        dob: { type: Date },
+        sex: { type: Number },
     },
     {
         timestamps: true,
     },
 );
-
 
 module.exports = mongoose.model('User', User);

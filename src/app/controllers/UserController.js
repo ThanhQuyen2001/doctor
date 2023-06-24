@@ -7,33 +7,34 @@ class UserController {
                     code: 0,
                     data: user,
                     message: 'Thành công',
-                })
+                }),
             )
             .catch(() => {
                 res.json({
                     code: 0,
                     data: null,
                     message: 'Thành công',
-                })
+                });
             });
     }
 
-    findAll(req, res, next) {
-        User.find({ ten: { $regex: req.query.search ? req.query.search : '' }, chucVu: req.query.chucVu })
-            .then((users) =>
-                res.json({
-                    code: 0,
-                    data: users,
-                    message: 'Thành công',
-                })
-            )
-            .catch(() => {
-                res.json({
-                    code: 0,
-                    data: [],
-                    message: 'Thành công',
-                })
+    async findAll(req, res, next) {
+        try {
+            let users = await User.find({});
+            users.forEach((user) => {
+                user.password = '';
             });
+            res.status(200).json({
+                code: 1,
+                data: users,
+                message: 'Thành công',
+            });
+        } catch (error) {
+            res.status(500).json({
+                code: 500,
+                message: 'Lỗi server',
+            });
+        }
     }
 
     create(req, res, next) {
@@ -42,14 +43,14 @@ class UserController {
                 res.json({
                     code: 0,
                     message: 'Thành công',
-                })
+                });
             })
             .catch(() => {
                 res.json({
                     code: 1,
                     message: 'Thất bại',
-                })
-            })
+                });
+            });
     }
 
     update(req, res, next) {
@@ -58,14 +59,14 @@ class UserController {
                 res.json({
                     code: 0,
                     message: 'Thành công',
-                })
+                });
             })
             .catch(() => {
                 res.json({
                     code: 1,
                     message: 'Thất bại',
-                })
-            })
+                });
+            });
     }
 
     delete(req, res, next) {
@@ -74,41 +75,47 @@ class UserController {
                 res.json({
                     code: 0,
                     message: 'Thành công',
-                })
+                });
             })
             .catch(() => {
                 res.json({
                     code: 1,
                     message: 'Thất bại',
-                })
-            })
+                });
+            });
     }
     login(req, res, next) {
-        User.findOne({ phone: req.body.phone, password: req.body.password })
-            .then((user) => {
-                if (!user) {
+        User.findOne({
+            phone: req.body.phone,
+            password: req.body.password,
+        }).then((user) => {
+            if (!user) {
+                res.json({
+                    code: 1,
+                    message: 'Tài khoản hoặc mật khẩu không đúng.',
+                });
+                return;
+            }
+            if (user) {
+                if (user.chucVu == 99) {
                     res.json({
-                        code: 1,
-                        message: 'Tài khoản hoặc mật khẩu không đúng.',
+                        code: 2,
+                        message: 'Không có quyền đăng nhập.',
                     });
                     return;
                 }
-                if(user) {
-                    if(user.chucVu == 99) {
-                        res.json({
-                            code: 2,
-                            message: 'Không có quyền đăng nhập.',
-                        });
-                        return;
-                    }
-                }
-                res.json({
-                    code: 0,
-                    token: { id: user._id,ten: user.ten, anh: user.anh, chucVu: user.chucVu },
-                    message: 'Thành công',
-                })
             }
-            )
+            res.json({
+                code: 0,
+                token: {
+                    id: user._id,
+                    ten: user.ten,
+                    anh: user.anh,
+                    chucVu: user.chucVu,
+                },
+                message: 'Thành công',
+            });
+        });
     }
 }
 
