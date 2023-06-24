@@ -4,7 +4,6 @@ function checkLoggedIn(req, res, next) {
     try {
         const token_req = req.headers['authorization'].replace('Bearer ', '');
         const verified_req = jwt.verify(token_req, auth.SECRET_KEY);
-        console.log(verified_req);
         if (!verified_req)
             res.status(401).json({
                 code: 401,

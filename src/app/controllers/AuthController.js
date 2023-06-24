@@ -27,6 +27,21 @@ class UserController {
             });
         }
     }
+    async getProfile(req, res, next) {
+        try {
+            const token = req.headers.cookie.replace('token=', '');
+            const verified = jwt.verify(token, auth.SECRET_KEY);
+            res.status(200).json({
+                code: 1,
+                data: verified,
+            });
+        } catch {
+            res.status(500).json({
+                code: 500,
+                message: 'Lỗi server',
+            });
+        }
+    }
 }
 
 module.exports = new UserController();
