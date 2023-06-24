@@ -17,7 +17,7 @@ class UserController {
             user = user.toObject();
             user.password = '';
             const token = jwt.sign({ data: user }, auth.SECRET_KEY, {
-                expiresIn: '60s',
+                expiresIn: '1h',
             });
             res.cookie('token', token).status(200).json({
                 code: 1,
