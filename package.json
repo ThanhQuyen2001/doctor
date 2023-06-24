@@ -6,7 +6,6 @@
   "scripts": {
     "beautiful": "lint-staged",
     "start": "nodemon --inspect src/index.js",
-    "watch": "node-sass --watch src/resources/scss/ --output src/public/css/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,7 +26,7 @@
   },
   "homepage": "https://github.com/sondnpt00343/nodejs_blog#readme",
   "lint-staged": {
-    "src/**/*.{js,json,scss}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+    "src/**/*.{js,json}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
   },
   "husky": {
     "hooks": {
@@ -42,7 +41,6 @@
     "mongoose": "^5.9.27",
     "mongoose-delete": "^0.5.2",
     "mongoose-slug-generator": "^1.0.4",
-    "node-sass": "^7.0.3",
     "save": "^2.9.0"
   },
   "devDependencies": {
