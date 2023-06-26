@@ -1,10 +1,10 @@
-const User = require('../models/User');
-class UserController {
+const MedicineType = require('../models/MedicineType');
+class MedicineTypeController {
     async findOne(req, res, next) {
         try {
-            let entry = await User.findOne({ _id: req.query.id });
+            let entry = await MedicineType.findOne({ _id: req.query.id });
             res.status(200).json({
-                code: 0,
+                code: 1,
                 data: entry,
                 message: 'Thành công',
             });
@@ -12,12 +12,13 @@ class UserController {
             next();
         }
     }
+
     async findAll(req, res, next) {
         try {
-            let users = await User.find({});
+            let entries = await MedicineType.find({});
             res.status(200).json({
                 code: 1,
-                data: users,
+                data: entries,
                 message: 'Thành công',
             });
         } catch (error) {
@@ -27,11 +28,11 @@ class UserController {
 
     async create(req, res, next) {
         try {
-            let entry = await User.create({ ...req.body });
+            let entry = await MedicineType.create({ ...req.body });
             res.status(200).json({
                 code: 1,
-                message: 'Thành công',
                 data: entry,
+                message: 'Thành công',
             });
         } catch (error) {
             next();
@@ -40,7 +41,10 @@ class UserController {
 
     async update(req, res, next) {
         try {
-            let entry = await User.updateOne({ _id: req.body._id }, req.body);
+            let entry = await MedicineType.updateOne(
+                { _id: req.query.id },
+                req.body,
+            );
             res.status(200).json({
                 code: 1,
                 message: 'Thành công',
@@ -53,8 +57,8 @@ class UserController {
 
     async delete(req, res, next) {
         try {
-            await User.deleteOne({ _id: req.query.id });
-            res.status(200).json({
+            await MedicineType.deleteOne({ _id: req.query.id });
+            res.statu(200).json({
                 code: 1,
                 message: 'Thành công',
             });
@@ -64,4 +68,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController();
+module.exports = new MedicineTypeController();

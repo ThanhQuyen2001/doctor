@@ -11,7 +11,10 @@ const User = new Schema(
         position: { type: Number },
         password: { type: String },
         dob: { type: Date },
-        sex: { type: Number },
+        age: { type: Number },
+        sex: { type: String },
+        specialist: { type: String },
+        degree: { type: String },
     },
     {
         timestamps: true,
@@ -21,6 +24,7 @@ const User = new Schema(
             transform(doc, ret) {
                 ret.id = ret._id;
                 delete ret._id;
+                delete ret.password;
             },
         },
     },
