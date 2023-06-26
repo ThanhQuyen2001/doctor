@@ -49,7 +49,10 @@ class UserController {
                     message: 'Số điện thoại hoặc tên đăng nhập đã tồn tại',
                 });
             }
-            let entry = await User.create({ ...req.body });
+            let entry = await User.create({
+                password: '123456a@',
+                ...req.body,
+            });
             res.status(200).json({
                 code: 1,
                 data: entry,
@@ -61,8 +64,8 @@ class UserController {
     }
 
     async update(req, res, next) {
-        console.log('put');
         try {
+            let user = await User.findOne({ _id: req.params.id });
             let userMatch = await User.findOne({
                 $and: [
                     {
@@ -80,7 +83,10 @@ class UserController {
                     message: 'Số điện thoại hoặc tên đăng nhập đã tồn tại',
                 });
             }
-            await User.update({ _id: req.body.id }, req.body);
+            await User.update(
+                { _id: req.body.id },
+                { password: user.password, ...req.body },
+            );
             res.status(200).json({
                 code: 1,
                 message: 'Thành công',

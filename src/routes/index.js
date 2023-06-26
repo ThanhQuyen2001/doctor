@@ -1,6 +1,7 @@
 const usersRouter = require('./users');
 const authRouter = require('./auth');
 const medicineTypesRoute = require('./medicineTypes');
+const medicinesRoute = require('./medicines');
 const checkLoggedIn = require('../core/auth');
 const serverError = (req, res, next) => {
     res.status(500).json({
@@ -17,6 +18,7 @@ function route(app) {
         medicineTypesRoute,
         serverError,
     );
+    app.use('/api/admin/medicines', checkLoggedIn, medicinesRoute, serverError);
     app.use('*', (req, res, next) => {
         res.status(404).json({
             code: 404,
