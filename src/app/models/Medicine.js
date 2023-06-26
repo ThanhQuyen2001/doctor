@@ -4,19 +4,27 @@ const Schema = mongoose.Schema;
 
 const Medicine = new Schema(
     {
-        name: { type: String },
+        name: { type: String, default: '' },
         quantity: {
-            value: { type: Number },
-            unit: { type: String },
+            value: { type: Number, require: true, default: 0 },
+            unit: { type: String, require: true, default: '' },
         },
-        type_id: { type: String, require: true },
+        type_id: { type: String, require: true, default: '' },
         price: {
-            value: { type: Number },
-            unit: { type: String },
+            value: { type: Number, require: true, default: 0 },
+            unit: { type: String, require: true, default: '' },
         },
+        drug_dosage: { type: String, default: '' },
+        contraindications: { type: String, default: '' },
+        side_effects: { type: String, default: '' },
+        careful: { type: String, default: '' },
+        description: { type: String, default: '' },
     },
     {
-        timestamps: true,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         versionKey: false,
         id: true,
         toJSON: {

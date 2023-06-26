@@ -4,10 +4,14 @@ const Schema = mongoose.Schema;
 
 const MedicineType = new Schema(
     {
-        name: { type: String },
+        name: { type: String, default: '' },
+        description: { type: String, default: '' },
     },
     {
-        timestamps: true,
+        timestamps: {
+            createdAt: 'created_at',
+            updatedAt: 'updated_at',
+        },
         versionKey: false,
         id: true,
         toJSON: {
