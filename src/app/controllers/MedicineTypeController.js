@@ -2,7 +2,7 @@ const MedicineType = require('../models/MedicineType');
 class MedicineTypeController {
     async findOne(req, res, next) {
         try {
-            let entry = await MedicineType.findOne({ _id: req.query.id });
+            let entry = await MedicineType.findOne({ _id: req.params.id });
             res.status(200).json({
                 code: 1,
                 data: entry,
@@ -15,10 +15,20 @@ class MedicineTypeController {
 
     async findAll(req, res, next) {
         try {
-            let entries = await MedicineType.find({});
+            const { limit = 12, page = 1 } = req.query;
+            let entries = await MedicineType.find({})
+                .skip(+limit * +(page - 1))
+                .limit(+limit)
+                .sort({ createdAt: -1 });
+            const totalDocs = await MedicineType.countDocuments();
             res.status(200).json({
                 code: 1,
                 data: entries,
+                pagination: {
+                    limit: limit,
+                    page: page,
+                    total: totalDocs,
+                },
                 message: 'Thành công',
             });
         } catch (error) {
@@ -28,7 +38,7 @@ class MedicineTypeController {
 
     async create(req, res, next) {
         try {
-            let entry = await MedicineType.create({ ...req.body });
+            let entry = await MedicineType.create(req.body);
             res.status(200).json({
                 code: 1,
                 data: entry,
@@ -41,14 +51,10 @@ class MedicineTypeController {
 
     async update(req, res, next) {
         try {
-            let entry = await MedicineType.updateOne(
-                { _id: req.query.id },
-                req.body,
-            );
+            await MedicineType.updateOne({ _id: req.params.id }, req.body);
             res.status(200).json({
                 code: 1,
                 message: 'Thành công',
-                data: entry,
             });
         } catch (error) {
             next();
@@ -57,7 +63,7 @@ class MedicineTypeController {
 
     async delete(req, res, next) {
         try {
-            await MedicineType.deleteOne({ _id: req.query.id });
+            await MedicineType.deleteOne({ _id: req.params.id });
             res.statu(200).json({
                 code: 1,
                 message: 'Thành công',

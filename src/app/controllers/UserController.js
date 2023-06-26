@@ -2,7 +2,7 @@ const User = require('../models/User');
 class UserController {
     async findOne(req, res, next) {
         try {
-            let entry = await User.findOne({ _id: req.query.id });
+            let entry = await User.findOne({ _id: req.params.id });
             res.status(200).json({
                 code: 0,
                 data: entry,
@@ -14,10 +14,20 @@ class UserController {
     }
     async findAll(req, res, next) {
         try {
-            let users = await User.find({});
+            const { limit = 12, page = 1 } = req.query;
+            let users = await User.find({})
+                .skip(+limit * +(page - 1))
+                .limit(+limit)
+                .sort({ createdAt: -1 });
+            const totalDocs = await User.countDocuments();
             res.status(200).json({
                 code: 1,
                 data: users,
+                pagination: {
+                    limit: limit,
+                    page: page,
+                    total: totalDocs,
+                },
                 message: 'Thành công',
             });
         } catch (error) {
@@ -27,11 +37,23 @@ class UserController {
 
     async create(req, res, next) {
         try {
+            let user = await User.findOne({
+                $or: [
+                    { phone: req.body.phone },
+                    { username: req.body.username },
+                ],
+            });
+            if (user) {
+                return res.status(409).json({
+                    code: 0,
+                    message: 'Số điện thoại hoặc tên đăng nhập đã tồn tại',
+                });
+            }
             let entry = await User.create({ ...req.body });
             res.status(200).json({
                 code: 1,
-                message: 'Thành công',
                 data: entry,
+                message: 'Thành công',
             });
         } catch (error) {
             next();
@@ -39,12 +61,29 @@ class UserController {
     }
 
     async update(req, res, next) {
+        console.log('put');
         try {
-            let entry = await User.updateOne({ _id: req.body._id }, req.body);
+            let userMatch = await User.findOne({
+                $and: [
+                    {
+                        $or: [
+                            { phone: req.body.phone },
+                            { username: req.body.username },
+                        ],
+                    },
+                    { _id: { $ne: req.params.id } },
+                ],
+            });
+            if (userMatch) {
+                return res.status(409).json({
+                    code: 409,
+                    message: 'Số điện thoại hoặc tên đăng nhập đã tồn tại',
+                });
+            }
+            await User.update({ _id: req.body.id }, req.body);
             res.status(200).json({
                 code: 1,
                 message: 'Thành công',
-                data: entry,
             });
         } catch (error) {
             next();
@@ -53,7 +92,7 @@ class UserController {
 
     async delete(req, res, next) {
         try {
-            await User.deleteOne({ _id: req.query.id });
+            await User.deleteOne({ _id: req.params.id });
             res.status(200).json({
                 code: 1,
                 message: 'Thành công',

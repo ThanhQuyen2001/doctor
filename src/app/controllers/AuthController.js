@@ -14,8 +14,6 @@ class UserController {
                 message: 'Tài khoản hoặc mật khẩu không đúng.',
             });
         } else {
-            user = user.toObject();
-            user.password = '';
             const token = jwt.sign({ data: user }, auth.SECRET_KEY, {
                 expiresIn: '1h',
             });
