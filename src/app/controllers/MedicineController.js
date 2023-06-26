@@ -76,7 +76,7 @@ class MedicineController {
     async delete(req, res, next) {
         try {
             await Medicine.deleteOne({ _id: req.params.id });
-            res.statu(200).json({
+            res.status(200).json({
                 code: 1,
                 message: 'Thành công',
             });

@@ -5,8 +5,15 @@ const Schema = mongoose.Schema;
 const Medicine = new Schema(
     {
         name: { type: String },
-        quantity: { type: Number },
+        quantity: {
+            value: { type: Number },
+            unit: { type: String },
+        },
         type_id: { type: String, require: true },
+        price: {
+            value: { type: Number },
+            unit: { type: String },
+        },
     },
     {
         timestamps: true,
