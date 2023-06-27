@@ -1,3 +1,4 @@
+const { toClient } = require('../../core/helpers');
 const User = require('../models/User');
 class UserController {
     async findOne(req, res, next) {
@@ -20,7 +21,7 @@ class UserController {
                 .limit(+limit)
                 .sort({ createdAt: -1 });
             users = users.map((user) => {
-                user = user.toObject();
+                user = toClient(user);
                 delete user.refresh_token;
                 delete user.password;
                 return user;
