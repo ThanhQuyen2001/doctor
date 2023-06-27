@@ -5,8 +5,12 @@ const Schema = mongoose.Schema;
 const HealthInsurance = new Schema(
     {
         full_name: { type: String, default: '' },
+        card_number: { type: String, default: '' },
         id_card: { type: String, default: '' },
         dob: { type: Date, default: '' },
+        sex: { type: String, default: '' },
+        code: { type: String, default: '' },
+        address: { type: String, default: '' },
         expired_at: { type: Date, default: '' },
         is_expired: { type: Boolean, default: false },
     },
