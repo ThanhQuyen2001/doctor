@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const token = require('../../constants/token');
 const User = require('../models/User');
 class UserController {
     async findOne(req, res, next) {
@@ -21,6 +19,12 @@ class UserController {
                 .skip(+limit * +(page - 1))
                 .limit(+limit)
                 .sort({ createdAt: -1 });
+            users = users.map((user) => {
+                user = user.toObject();
+                delete user.refresh_token;
+                delete user.password;
+                return user;
+            });
             const totalDocs = await User.countDocuments();
             res.status(200).json({
                 code: 1,

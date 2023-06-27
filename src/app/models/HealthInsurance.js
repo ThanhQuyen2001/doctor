@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const UserToken = new Schema(
+const HealthInsurance = new Schema(
     {
-        access_token: { type: String, default: '' },
-        expired_at: { type: Date, require: true },
-        user_id: { type: String, require: true },
+        full_name: { type: String, default: '' },
+        id_card: { type: String, default: '' },
+        dob: { type: Date, default: '' },
+        expired_at: { type: Date, default: '' },
+        is_expired: { type: Boolean, default: false },
     },
     {
         timestamps: {
@@ -20,10 +22,9 @@ const UserToken = new Schema(
                 ret.id = ret._id;
                 delete ret._id;
                 delete ret.__v;
-                delete ret.refresh_token;
             },
         },
     },
 );
 
-module.exports = mongoose.model('UserToken', UserToken);
+module.exports = mongoose.model('HealthInsurance', HealthInsurance);
