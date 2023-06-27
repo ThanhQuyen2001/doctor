@@ -5,12 +5,15 @@ const serverError = (req, res, next) => {
         message: 'Lỗi server',
     });
 };
+
 const usersRouter = require('./users');
 const authRouter = require('./auth');
 const medicineTypesRoute = require('./medicineTypes');
 const medicinesRoute = require('./medicines');
 const healthInsurancesRoute = require('./healthInsurances');
 const permissionsRoute = require('./permissions');
+const rolesRoute = require('./roles');
+
 function route(app) {
     app.use('/api/auth', authRouter, serverError);
     app.use('/api/admin/users', checkLoggedIn, usersRouter, serverError);
@@ -33,6 +36,7 @@ function route(app) {
         permissionsRoute,
         serverError,
     );
+    app.use('/api/admin/roles', checkLoggedIn, rolesRoute, serverError);
     app.use('*', (req, res, next) => {
         res.status(404).json({
             code: 404,

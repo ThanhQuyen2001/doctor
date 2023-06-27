@@ -5,7 +5,11 @@ const Schema = mongoose.Schema;
 const Medicine = new Schema(
     {
         name: { type: String, default: '' },
-        type_id: { type: String, require: true, default: '' },
+        type_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            require: true,
+            default: '',
+        },
         price: {
             value: { type: Number, require: true, default: 0 },
             unit: { type: String, require: true, default: '' },

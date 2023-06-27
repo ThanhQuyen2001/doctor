@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Role = require('../models/Role');
+const Permission = require('../models/Permission');
 const position = require('../../constants/position');
 const token = require('../../constants/token');
 const moment = require('moment-timezone');
@@ -88,11 +90,30 @@ class UserController {
     }
     async getProfile(req, res, next) {
         try {
-            const token = req.headers.cookie.replace('token=', '');
-            const verified = jwt.verify(token, token.TOKEN_KEY);
+            let access_token = req.headers['authorization'] || '';
+            access_token = access_token.replace('Bearer ', '');
+            if (!access_token) {
+                return res.status(401).json({
+                    code: 401,
+                    message: 'Vui lòng đăng nhập',
+                });
+            }
+            const verified = jwt.verify(access_token, token.TOKEN_KEY);
+            const position = verified.data.position;
+            let role = await Role.findOne({ position: position });
+            let permission_ids = role.permission_ids;
+            let permission_info = await Permission.find({
+                _id: {
+                    $in: permission_ids,
+                },
+            });
+            let data = {
+                ...verified.data,
+                role: { ...toClient(role), permissions: permission_info },
+            };
             res.status(200).json({
                 code: 1,
-                data: verified,
+                data: data,
             });
         } catch {
             res.status(401).json({

@@ -6,10 +6,14 @@ const MedicalAppointment = new Schema(
     {
         full_name: { type: String, default: '', require: true },
         disease_name: { type: String, default: '', require: true },
-        clinic_id: { type: String, default: '', require: true },
+        clinic_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            default: '',
+            require: true,
+        },
         sort: { type: Number, default: null, require: true },
         date: { type: Date, default: null, require: true },
-        user_id: { type: String, require: true },
+        user_id: { type: mongoose.Schema.Types.ObjectId, require: true },
         expired: { type: Boolean, default: false, require: true },
         confirmed: { type: Boolean, require: true, default: false },
     },

@@ -6,7 +6,7 @@ const UserToken = new Schema(
     {
         access_token: { type: String, default: '' },
         expired_at: { type: Date, require: true },
-        user_id: { type: String, require: true },
+        user_id: { type: mongoose.Schema.Types.ObjectId, require: true },
     },
     {
         timestamps: {

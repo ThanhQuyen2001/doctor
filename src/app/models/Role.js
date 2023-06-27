@@ -2,12 +2,12 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const MedicineType = new Schema(
+const Role = new Schema(
     {
         name: { type: String, default: '' },
-        phone: { type: String, default: '' },
-        address: { type: String, default: '' },
-        staff_ids: [
+        description: { type: String, default: '' },
+        position: { type: Number, require: true },
+        permission_ids: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 require: true,
@@ -31,4 +31,4 @@ const MedicineType = new Schema(
     },
 );
 
-module.exports = mongoose.model('MedicineType', MedicineType);
+module.exports = mongoose.model('Role', Role);

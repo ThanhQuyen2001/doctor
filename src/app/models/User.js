@@ -22,7 +22,7 @@ const User = new Schema(
         count_faild: { type: Number, default: 0 },
         refresh_token: { type: String, default: '' },
         rt_expired_at: { type: Date, require: true },
-        clinic_id: { type: String, require: true },
+        clinic_id: { type: mongoose.Schema.Types.ObjectId, require: true },
     },
     {
         timestamps: {
