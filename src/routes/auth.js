@@ -6,6 +6,6 @@ const authController = require('../app/controllers/AuthController');
 
 router.post('/login', authController.login);
 router.get('/profile', checkLoggedIn, authController.getProfile);
-router.get('/access-token', authController.getNewToken);
+router.get('/access-token', authController.getAccessToken);
 
 module.exports = router;

@@ -102,7 +102,7 @@ class UserController {
         }
     }
 
-    async getNewToken(req, res, next) {
+    async getAccessToken(req, res, next) {
         try {
             let refresh_token = req.query.refresh_token;
             let user = await User.findOne({ refresh_token: refresh_token });
