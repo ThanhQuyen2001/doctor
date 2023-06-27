@@ -15,8 +15,24 @@ class UserController {
     }
     async findAll(req, res, next) {
         try {
-            const { limit = 12, page = 1 } = req.query;
-            let users = await User.find({})
+            const {
+                limit = 12,
+                page = 1,
+                name = '',
+                phone = '',
+                position = '',
+                id_card = '',
+            } = req.query;
+            let users = await User.find({
+                position: position ? position : { $ne: position },
+                name: name ? { $regex: name, $options: 'i' } : { $ne: name },
+                phone: phone
+                    ? { $regex: phone, $options: 'i' }
+                    : { $ne: phone },
+                id_card: id_card
+                    ? { $regex: id_card, $options: 'i' }
+                    : { $ne: id_card },
+            })
                 .skip(+limit * +(page - 1))
                 .limit(+limit)
                 .sort({ createdAt: -1 });
@@ -38,6 +54,7 @@ class UserController {
                 message: 'Thành công',
             });
         } catch (error) {
+            console.log(error);
             next();
         }
     }
