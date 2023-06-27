@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const UserToken = require('../models/UserTokens');
+const UserToken = require('../models/UserToken');
 class UserTokenController {
     async upsert({ user_id, access_token, expired_at }) {
         try {
