@@ -18,8 +18,11 @@ const User = new Schema(
         degree: { type: String, default: '' },
         health_insurance: { type: String, default: '' },
         id_card: { type: String, default: '' },
-        enabled: { type: Boolean, default: true },
+        is_lock: { type: Boolean, default: false },
         count_faild: { type: Number, default: 0 },
+        refresh_token: { type: String, default: '' },
+        rt_expired_at: { type: Date, require: true },
+        at_expired_at: { type: Date, require: true },
     },
     {
         timestamps: {

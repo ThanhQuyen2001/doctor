@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const token = require('../../constants/token');
 const User = require('../models/User');
 class UserController {
     async findOne(req, res, next) {

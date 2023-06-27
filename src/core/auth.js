@@ -1,25 +1,23 @@
 const jwt = require('jsonwebtoken');
-const auth = require('../constants/auth');
+const token = require('../constants/token');
 function checkLoggedIn(req, res, next) {
     try {
-        let token_req = req.headers['authorization'] || '';
-        token_req = token_req.replace('Bearer ', '');
-        const verified_req = jwt.verify(token_req, auth.SECRET_KEY);
-        if (!verified_req || !token_req)
-            res.status(401).json({
-                code: 401,
-                message: 'Hết phiên đăng nhập',
-            });
-        let token = req.headers['cookie'];
-        token = token.replace('token=', '');
-        const verified = jwt.verify(token, auth.SECRET_KEY);
-        if (verified && token) next();
-        else {
+        let access_token = req.headers['authorization'] || '';
+        access_token = access_token.replace('Bearer ', '');
+        if (!access_token) {
             return res.status(401).json({
                 code: 401,
                 message: 'Vui lòng đăng nhập',
             });
         }
+        const verified = jwt.verify(access_token, token.TOKEN_KEY);
+        if (!verified) {
+            return res.status(401).json({
+                code: 401,
+                message: 'Hết phiên đăng nhập',
+            });
+        }
+        next();
     } catch (error) {
         res.status(401).json({
             code: 401,

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const Medicine = new Schema(
+const MedicalAppointment = new Schema(
     {
         full_name: { type: String, default: '', require: true },
         disease_name: { type: String, default: '', require: true },
@@ -30,4 +30,4 @@ const Medicine = new Schema(
     },
 );
 
-module.exports = mongoose.model('Medicine', Medicine);
+module.exports = mongoose.model('MedicalAppointment', MedicalAppointment);
