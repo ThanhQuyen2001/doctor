@@ -10,6 +10,7 @@ const authRouter = require('./auth');
 const medicineTypesRoute = require('./medicineTypes');
 const medicinesRoute = require('./medicines');
 const healthInsurancesRoute = require('./healthInsurances');
+const permissionsRoute = require('./permissions');
 function route(app) {
     app.use('/api/auth', authRouter, serverError);
     app.use('/api/admin/users', checkLoggedIn, usersRouter, serverError);
@@ -24,6 +25,12 @@ function route(app) {
         '/api/admin/health-insurances',
         checkLoggedIn,
         healthInsurancesRoute,
+        serverError,
+    );
+    app.use(
+        '/api/admin/permissions',
+        checkLoggedIn,
+        permissionsRoute,
         serverError,
     );
     app.use('*', (req, res, next) => {
