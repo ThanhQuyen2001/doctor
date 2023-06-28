@@ -4,7 +4,7 @@ async function connect() {
     try {
         await mongoose.connect(
             process.env.DATABASE_URL ||
-                'mongodb+srv://quyen090401:123456a%40@cluster0.atvuf3c.mongodb.net/doctor',
+                'mongodb+srv://quyen090401:123456a@@cluster0.atvuf3c.mongodb.net/?retryWrites=true&w=majority',
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
