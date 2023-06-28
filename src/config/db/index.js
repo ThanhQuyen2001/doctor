@@ -4,8 +4,7 @@ async function connect() {
     try {
         const uri =
             process.env.DATABASE_URL ||
-            'mongodb+srv://quyen090401:123456a@@cluster0.atvuf3c.mongodb.net/doctor';
-        console.log(uri, 'uri');
+            'mongodb+srv://quyen090401:123456a@@cluster0.atvuf3c.mongodb.net/';
         await mongoose.connect(uri, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
