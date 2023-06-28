@@ -17,7 +17,7 @@ const clinicsRoute = require('./clinics');
 
 function route(app) {
     app.use('/api/auth', authRouter, serverError);
-    app.use('/api/admin/users', usersRouter, serverError);
+    app.use('/api/admin/users', checkLoggedIn, usersRouter, serverError);
     app.use(
         '/api/admin/medicine-types',
         checkLoggedIn,
