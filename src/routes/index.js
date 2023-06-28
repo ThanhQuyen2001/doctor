@@ -13,6 +13,7 @@ const medicinesRoute = require('./medicines');
 const healthInsurancesRoute = require('./healthInsurances');
 const permissionsRoute = require('./permissions');
 const rolesRoute = require('./roles');
+const clinicsRoute = require('./clinics');
 
 function route(app) {
     app.use('/api/auth', authRouter, serverError);
@@ -37,6 +38,8 @@ function route(app) {
         serverError,
     );
     app.use('/api/admin/roles', checkLoggedIn, rolesRoute, serverError);
+    app.use('/api/admin/clinics', checkLoggedIn, clinicsRoute, serverError);
+
     app.use('*', (req, res, next) => {
         res.status(404).json({
             code: 404,

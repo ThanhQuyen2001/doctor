@@ -1,4 +1,23 @@
 const Clinic = require('../models/Clinic');
+let validator = (req, res, next, entry) => {
+    let validate = {
+        name: 'Tên phòng khám',
+        phone: 'Số điện thoại',
+        address: 'Địa chỉ',
+    };
+    for (let key in validate) {
+        if (!entry[key]) {
+            return {
+                value: false,
+                message: validate[key] + ' không được trống',
+            };
+        }
+    }
+    return {
+        value: true,
+        message: 'Đầy đủ thông tin',
+    };
+};
 
 class ClinicController {
     async findOne(req, res, next) {
@@ -39,6 +58,13 @@ class ClinicController {
 
     async create(req, res, next) {
         try {
+            let result_validator = validator(req, res, next, req.body);
+            if (!result_validator.value) {
+                return res.status(200).json({
+                    code: 409,
+                    message: result_validator.message,
+                });
+            }
             let entry = await Clinic.create(req.body);
             res.status(200).json({
                 code: 1,
@@ -52,6 +78,13 @@ class ClinicController {
 
     async update(req, res, next) {
         try {
+            let result_validator = validator(req, res, next, req.body);
+            if (!result_validator.value) {
+                return res.status(200).json({
+                    code: 409,
+                    message: result_validator.message,
+                });
+            }
             await Clinic.updateOne({ _id: req.params.id }, req.body);
             res.status(200).json({
                 code: 1,
